@@ -19,7 +19,7 @@ class SIMULATION:
             self.robot.Sense(t)
             self.robot.Think()
             self.robot.Act()
-            time.sleep(1/10000000)
+            time.sleep(1/1000000000)
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
