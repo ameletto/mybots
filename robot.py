@@ -43,11 +43,11 @@ class ROBOT:
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
         stateOfLinkZero = p.getLinkState(self.robot,0)
-        # print(stateOfLinkZero)
+        print(stateOfLinkZero)
         positionOfLinkZero = stateOfLinkZero[0]
-        # print(positionOfLinkZero)
+        print(positionOfLinkZero)
         xCoordinateOfLinkZero = positionOfLinkZero[0]
-        # print(xCoordinateOfLinkZero)
+        print(xCoordinateOfLinkZero)
         f = open("fitness.txt", "w")
         f.write(str(xCoordinateOfLinkZero))
         exit()

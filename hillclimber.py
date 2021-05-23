@@ -1,5 +1,6 @@
 from solution import SOLUTION
 import constants as c
+import copy
 
 class HILL_CLIMBER:
     def __init__(self):
@@ -19,7 +20,8 @@ class HILL_CLIMBER:
         self.Select()
 
     def Spawn(self):
-        pass
+        # self.child receives a copy of self.parent's weights, as well as its fitness
+        self.child = copy.deepcopy(self.parent)
 
     def Mutate(self):
         pass
