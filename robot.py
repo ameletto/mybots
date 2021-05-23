@@ -38,7 +38,7 @@ class ROBOT:
 
     def Think(self):
         self.nn.Update()
-        self.nn.Print()
+        # self.nn.Print()
 
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link

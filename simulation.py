@@ -7,7 +7,7 @@ import time
 
 class SIMULATION:
     def __init__(self):
-        self.physicsClient = p.connect(p.GUI)
+        self.physicsClient = p.connect(p.DIRECT)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.8)
         self.world = WORLD()
@@ -19,7 +19,7 @@ class SIMULATION:
             self.robot.Sense(t)
             self.robot.Think()
             self.robot.Act()
-            time.sleep(1/1000)
+            time.sleep(1/1000000000)
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
