@@ -11,12 +11,14 @@ class HILL_CLIMBER:
         # this for loop will spawn a mutated copy of self.parent, evaluate that child solution's fitness, 
         # and replace self.parent with this child, if it achieves a better fitness <-- repeat for several generations
         for currentGeneration in range(c.numberOfGenerations):
+            print(currentGeneration)
             self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
         self.Mutate()
         self.child.Evaluate()
+        self.Print()
         self.Select()
 
     def Spawn(self):
@@ -27,6 +29,9 @@ class HILL_CLIMBER:
         self.child.Mutate()
 
     def Select(self):
-        print(self.parent.fitness)
-        print (self.child.fitness)
-        exit()
+        # we want the robot to move as far away from the camera as possible (smallest x value)
+        if self.parent.fitness > self.child.fitness:
+            self.parent = self.child
+
+    def Print(self):
+        print(self.parent.fitness, self.child.fitness)
