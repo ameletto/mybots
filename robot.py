@@ -26,6 +26,9 @@ class ROBOT:
         for jointName in pyrosim.jointNamesToIndices:
             self.motors[jointName] = MOTOR(jointName, robot)
 
+    # essentially what's going on = synapseWeight (generated randomly) * sensorNeuronValue added to motorNeuronValue
+    # and then the motorNeuronValue is thresholded and converted to a target angle
+    # so the AI will test weights until it gets to the optimal weight (influence sensor value has on motor value)
     def Act(self):
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
@@ -36,3 +39,15 @@ class ROBOT:
     def Think(self):
         self.nn.Update()
         self.nn.Print()
+
+    def Get_Fitness(self):
+        # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
+        stateOfLinkZero = p.getLinkState(self.robot,0)
+        print(stateOfLinkZero)
+        positionOfLinkZero = stateOfLinkZero[0]
+        print(positionOfLinkZero)
+        xCoordinateOfLinkZero = positionOfLinkZero[0]
+        print(xCoordinateOfLinkZero)
+        f = open("fitness.txt", "w")
+        f.write(str(xCoordinateOfLinkZero))
+        exit()
