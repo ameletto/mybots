@@ -9,6 +9,7 @@ class PARALLEL_HILL_CLIMBER:
         for i in range (c.populationSize):
             self.parents[i] = SOLUTION(self.nextAvailableID)
             self.nextAvailableID += 1
+        print(self.parents)
 
     def Evolve(self):
         for j in self.parents:
@@ -28,6 +29,7 @@ class PARALLEL_HILL_CLIMBER:
     def Spawn(self):
         # self.child receives a copy of self.parent's weights, as well as its fitness
         self.child = copy.deepcopy(self.parent)
+        self.child.Set_ID()
 
     def Mutate(self):
         self.child.Mutate()
