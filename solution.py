@@ -18,7 +18,7 @@ class SOLUTION:
         self.Create_Body()
         self.Create_Brain()
         # for multiple simulations to run at the same time
-        os.system("python3 simulate.py " + directOrGUI + " &")
+        os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) +" &")
         fitnessFile = open("fitness.txt", "r")
         self.fitness = float(fitnessFile.read())
         fitnessFile.close()
@@ -40,7 +40,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+        pyrosim.Start_NeuralNetwork("brain"+str(self.myID)+".nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = "FrontLeg")

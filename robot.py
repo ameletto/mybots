@@ -3,14 +3,20 @@ import pyrosim.pyrosim as pyrosim
 from sensor import SENSOR
 from motor import MOTOR
 from pyrosim.neuralNetwork import NEURAL_NETWORK
+import os
 
 class ROBOT:
-    def __init__(self):
+    def __init__(self, solutionID):
         self.robot = p.loadURDF("body.urdf")
+        self.solutionID = solutionID
         pyrosim.Prepare_To_Simulate("body.urdf")
         self.Prepare_To_Sense()
         self.Prepare_To_Act(self.robot)
-        self.nn = NEURAL_NETWORK("brain.nndf")
+        self.nn = NEURAL_NETWORK("brain"+self.solutionID+".nndf")
+        # deletes the nndf file after it has been read
+        # but why do we have to run search.py first???
+        # i think it's because search.py (re)creates the brainID.nndf files? 
+        os.system("rm brain"+str(self.solutionID)+".nndf")
 
     def Prepare_To_Sense(self):
         self.sensors = {}
