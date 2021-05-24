@@ -9,3 +9,4 @@ frequencyFrontLeg=10
 phaseOffsetFrontLeg=0
 
 numberOfGenerations = 100
+populationSize = 2

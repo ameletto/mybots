@@ -7,6 +7,7 @@ import time
 
 class SIMULATION:
     def __init__(self, directOrGUI):
+        self.directOrGUI = directOrGUI
         if directOrGUI == "DIRECT":
             p.connect(p.DIRECT)
         elif directOrGUI == "GUI":
@@ -22,7 +23,8 @@ class SIMULATION:
             self.robot.Sense(t)
             self.robot.Think()
             self.robot.Act()
-            time.sleep(1/1000000000)
+            if self.directOrGUI == "GUI":
+                time.sleep(1/10000)
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
