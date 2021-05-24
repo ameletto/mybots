@@ -7,17 +7,16 @@ class HILL_CLIMBER:
         self.parent = SOLUTION()
 
     def Evolve(self):
-        self.parent.Evaluate()
+        self.parent.Evaluate("GUI")
         # this for loop will spawn a mutated copy of self.parent, evaluate that child solution's fitness, 
         # and replace self.parent with this child, if it achieves a better fitness <-- repeat for several generations
         for currentGeneration in range(c.numberOfGenerations):
-            print(currentGeneration)
             self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
         self.Mutate()
-        self.child.Evaluate()
+        self.child.Evaluate("DIRECT")
         self.Print()
         self.Select()
 
@@ -35,3 +34,6 @@ class HILL_CLIMBER:
 
     def Print(self):
         print(self.parent.fitness, self.child.fitness)
+
+    def Show_Best(self):
+        self.parent.Evaluate("GUI")
