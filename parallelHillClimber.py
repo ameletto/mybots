@@ -14,10 +14,7 @@ class PARALLEL_HILL_CLIMBER:
             self.nextAvailableID += 1
 
     def Evolve(self):
-        for j in self.parents:
-            self.parents[j].Start_Simulation("DIRECT")
-        for j in self.parents:
-            self.parents[j].Wait_For_Simulation_To_End()
+        self.Evaluate(self.parents)
         # this for loop will spawn a mutated copy of self.parent, evaluate that child solution's fitness, 
         # and replace self.parent with this child, if it achieves a better fitness <-- repeat for several generations
         for currentGeneration in range(c.numberOfGenerations):
@@ -26,7 +23,7 @@ class PARALLEL_HILL_CLIMBER:
     def Evolve_For_One_Generation(self):
         self.Spawn()
         self.Mutate()
-        # self.child.Evaluate("DIRECT")
+        self.Evaluate(self.children)
         # self.Print()
         # self.Select()
 
@@ -42,13 +39,19 @@ class PARALLEL_HILL_CLIMBER:
         for j in self.children:
             self.children[j].Mutate()
 
+    def Evaluate(self, solutions):
+        for j in solutions:
+            solutions[j].Start_Simulation("DIRECT")
+        for j in solutions:
+            solutions[j].Wait_For_Simulation_To_End()
+
+    def Print(self):
+        print(self.parent.fitness, self.child.fitness)
+
     def Select(self):
         # we want the robot to move as far away from the camera as possible (smallest x value)
         if self.parent.fitness > self.child.fitness:
             self.parent = self.child
-
-    def Print(self):
-        print(self.parent.fitness, self.child.fitness)
 
     def Show_Best(self):
         pass
