@@ -24,7 +24,7 @@ class PARALLEL_HILL_CLIMBER:
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
-        # self.Print()
+        self.Print()
         # self.Select()
 
     def Spawn(self):
@@ -46,7 +46,10 @@ class PARALLEL_HILL_CLIMBER:
             solutions[j].Wait_For_Simulation_To_End()
 
     def Print(self):
-        print(self.parent.fitness, self.child.fitness)
+        for i in self.parents:
+            print("")
+            print(self.parents[i].fitness, self.children[i].fitness)
+            print("")
 
     def Select(self):
         # we want the robot to move as far away from the camera as possible (smallest x value)
