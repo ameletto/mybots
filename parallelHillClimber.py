@@ -9,7 +9,7 @@ class PARALLEL_HILL_CLIMBER:
         os.system("rm fitness*.txt")
         self.parents = {}
         self.nextAvailableID = 0
-        for i in range (0, c.populationSize):
+        for i in range(c.populationSize):
             self.parents[i] = SOLUTION(self.nextAvailableID)
             self.nextAvailableID += 1
 
@@ -18,44 +18,51 @@ class PARALLEL_HILL_CLIMBER:
         # this for loop will spawn a mutated copy of self.parent, evaluate that child solution's fitness, 
         # and replace self.parent with this child, if it achieves a better fitness <-- repeat for several generations
         for currentGeneration in range(c.numberOfGenerations):
-            self.Evolve_For_One_Generation(currentGeneration)
+            self.Evolve_For_One_Generation()
 
-    def Evolve_For_One_Generation(self, currentGeneration):
+    def Evolve_For_One_Generation(self):
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
         self.Print()
-        self.Select(currentGeneration)
+        self.Select()
 
     def Spawn(self):
         # self.child receives a copy of self.parent's weights, as well as its fitness
         self.children = {}
         for i in self.parents:
             self.children[i] = copy.deepcopy(self.parents[i])
-            self.children[i].Set_ID()
+            self.children[i].Set_ID(self.nextAvailableID)
             self.nextAvailableID += 1
 
+    # just changing weights, not fitness bc it didn't run yet
     def Mutate(self):
-        for j in self.children:
+        for j in self.parents:
             self.children[j].Mutate()
 
     def Evaluate(self, solutions):
         for j in solutions:
             solutions[j].Start_Simulation("DIRECT")
-        for j in solutions:
-            solutions[j].Wait_For_Simulation_To_End()
+        for k in solutions:
+            solutions[k].Wait_For_Simulation_To_End()
 
     def Print(self):
         for i in self.parents:
             print("")
-            print(self.parents[i].fitness, self.children[i].fitness)
+            print(self.parents[i].fitness)
+            print(self.children[i].fitness)
             print("")
 
-    def Select(self, currentGeneration):
+    def Select(self):
         # we want the robot to move as far away from the camera as possible (smallest x value)
-        if self.parents[currentGeneration].fitness > self.children[currentGeneration].fitness:
-            self.parents[currentGeneration] = self.children[currentGeneration]
+        for i in self.parents:
+            if float((self.parents[i]).fitness) >= float((self.children[i]).fitness):
+                self.parents[i] = self.children[i]
 
     def Show_Best(self):
-        pass
-        # self.parent.Evaluate("GUI")
+        for i in range(0, c.populationSize-1):
+            if float(self.parents[i].fitness) < float(self.parents[i+1].fitness):
+                parentWithBestFitness = self.parents[i]
+            else:
+                parentWithBestFitness = self.parents[i+1]
+        parentWithBestFitness.Start_Simulation("GUI")

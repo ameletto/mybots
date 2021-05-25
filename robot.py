@@ -4,6 +4,7 @@ from sensor import SENSOR
 from motor import MOTOR
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
+import time
 
 class ROBOT:
     def __init__(self, solutionID):
@@ -18,7 +19,6 @@ class ROBOT:
         # i think it's because search.py (re)creates the brainID.nndf files? 
         os.system("rm brain"+str(self.solutionID)+".nndf")
         
-
     def Prepare_To_Sense(self):
         self.sensors = {}
         for linkName in pyrosim.linkNamesToIndices:
@@ -49,13 +49,10 @@ class ROBOT:
 
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
-        stateOfLinkZero = p.getLinkState(self.robot,0)
-        # print(stateOfLinkZero)
-        positionOfLinkZero = stateOfLinkZero[0]
-        # print(positionOfLinkZero)
-        xCoordinateOfLinkZero = positionOfLinkZero[0]
-        # print(xCoordinateOfLinkZero)
+        stateOfLinkZero = p.getLinkState(self.robot, 0)
+        # positionOfLinkZero = stateOfLinkZero[0]
+        # xCoordinateOfLinkZero = positionOfLinkZero[0]
         f = open("tmp"+str(self.solutionID)+".txt", "w")
-        f.write(str(xCoordinateOfLinkZero))
-        os.system("mv tmp"+str(self.solutionID)+".txt fitness"+str(self.solutionID)+".txt") 
-
+        f.write(str(stateOfLinkZero[0][0]))
+        f.close()
+        os.system("mv" + " " + "tmp"+str(self.solutionID)+".txt" + " " + "fitness"+str(self.solutionID)+".txt") 

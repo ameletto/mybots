@@ -10,8 +10,7 @@ height=1
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
-        self.weights = numpy.random.rand(3, 2)
-        self.weights = self.weights * 2 - 1
+        self.weights = numpy.random.rand(3, 2) * 2 - 1
         self.myID = nextAvailableID
         
     def Start_Simulation(self, directOrGUI):
@@ -65,5 +64,5 @@ class SOLUTION:
         randomColumn = random.randint(0, 1)
         self.weights[randomRow,randomColumn] = random.random() * 2 - 1
 
-    def Set_ID(self):
-        return self.myID
+    def Set_ID(self, newID):
+        self.myID = newID

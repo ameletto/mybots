@@ -8,5 +8,5 @@ amplitudeFrontLeg=numpy.pi/4
 frequencyFrontLeg=10
 phaseOffsetFrontLeg=0
 
-numberOfGenerations = 2
-populationSize = 2
+numberOfGenerations = 10
+populationSize = 10
