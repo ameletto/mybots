@@ -24,8 +24,7 @@ class PARALLEL_HILL_CLIMBER:
             self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
-        pass
-        # self.Spawn()
+        self.Spawn()
         # self.Mutate()
         # self.child.Evaluate("DIRECT")
         # self.Print()
@@ -33,8 +32,13 @@ class PARALLEL_HILL_CLIMBER:
 
     def Spawn(self):
         # self.child receives a copy of self.parent's weights, as well as its fitness
-        self.child = copy.deepcopy(self.parent)
-        self.child.Set_ID()
+        self.children = {}
+        for i in self.parents:
+            self.children[i] = copy.deepcopy(self.parents[i])
+            self.children[i].Set_ID()
+            self.nextAvailableID += 1
+        print(self.children)
+        exit()
 
     def Mutate(self):
         self.child.Mutate()
