@@ -18,14 +18,14 @@ class PARALLEL_HILL_CLIMBER:
         # this for loop will spawn a mutated copy of self.parent, evaluate that child solution's fitness, 
         # and replace self.parent with this child, if it achieves a better fitness <-- repeat for several generations
         for currentGeneration in range(c.numberOfGenerations):
-            self.Evolve_For_One_Generation()
+            self.Evolve_For_One_Generation(currentGeneration)
 
-    def Evolve_For_One_Generation(self):
+    def Evolve_For_One_Generation(self, currentGeneration):
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
         self.Print()
-        # self.Select()
+        self.Select(currentGeneration)
 
     def Spawn(self):
         # self.child receives a copy of self.parent's weights, as well as its fitness
@@ -51,10 +51,10 @@ class PARALLEL_HILL_CLIMBER:
             print(self.parents[i].fitness, self.children[i].fitness)
             print("")
 
-    def Select(self):
+    def Select(self, currentGeneration):
         # we want the robot to move as far away from the camera as possible (smallest x value)
-        if self.parent.fitness > self.child.fitness:
-            self.parent = self.child
+        if self.parents[currentGeneration].fitness > self.children[currentGeneration].fitness:
+            self.parents[currentGeneration] = self.children[currentGeneration]
 
     def Show_Best(self):
         pass
