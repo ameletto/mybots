@@ -2,6 +2,7 @@ import numpy
 import pyrosim.pyrosim as pyrosim
 import os
 import random
+import time
 
 length=1
 width=1
@@ -12,17 +13,23 @@ class SOLUTION:
         self.weights = numpy.random.rand(3, 2)
         self.weights = self.weights * 2 - 1
         self.myID = nextAvailableID
-
-    def Evaluate(self, directOrGUI):
+        
+    def Start_Simulation(self, directOrGUI):
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
         # for multiple simulations to run at the same time
+        # also starts simulate.py and immediately starts running the next statement without waiting for simulate.py to finish
         os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) +" &")
-        fitnessFile = open("fitness.txt", "r")
-        self.fitness = float(fitnessFile.read())
-        fitnessFile.close()
 
+    def Wait_For_Simulation_To_End(self):
+        while not os.path.exists("fitness"+str(self.myID)+".txt"):
+            time.sleep(0.01)
+        fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
+        self.fitness = fitnessFile.read()
+        fitnessFile.close()
+        os.system("rm fitness"+str(self.myID)+".txt")
+        
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
         pyrosim.Send_Cube(name="Box", pos=[-3,3,0.5] , size=[length,width,height])

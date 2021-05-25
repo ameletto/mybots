@@ -12,11 +12,12 @@ class ROBOT:
         pyrosim.Prepare_To_Simulate("body.urdf")
         self.Prepare_To_Sense()
         self.Prepare_To_Act(self.robot)
-        self.nn = NEURAL_NETWORK("brain"+self.solutionID+".nndf")
+        self.nn = NEURAL_NETWORK("brain"+str(self.solutionID)+".nndf")
         # deletes the nndf file after it has been read
         # but why do we have to run search.py first???
         # i think it's because search.py (re)creates the brainID.nndf files? 
         os.system("rm brain"+str(self.solutionID)+".nndf")
+        
 
     def Prepare_To_Sense(self):
         self.sensors = {}
@@ -54,6 +55,7 @@ class ROBOT:
         # print(positionOfLinkZero)
         xCoordinateOfLinkZero = positionOfLinkZero[0]
         # print(xCoordinateOfLinkZero)
-        f = open("fitness.txt", "w")
+        f = open("tmp"+str(self.solutionID)+".txt", "w")
         f.write(str(xCoordinateOfLinkZero))
-        exit()
+        os.system("mv tmp"+str(self.solutionID)+".txt fitness"+str(self.solutionID)+".txt") 
+
