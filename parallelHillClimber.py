@@ -49,8 +49,7 @@ class PARALLEL_HILL_CLIMBER:
     def Print(self):
         for i in self.parents:
             print("")
-            print(self.parents[i].fitness)
-            print(self.children[i].fitness)
+            print(self.parents[i].fitness, self.children[i].fitness)
             print("")
 
     def Select(self):
@@ -60,9 +59,10 @@ class PARALLEL_HILL_CLIMBER:
                 self.parents[i] = self.children[i]
 
     def Show_Best(self):
-        for i in range(0, c.populationSize-1):
-            if float(self.parents[i].fitness) < float(self.parents[i+1].fitness):
+        bestFitness = 9001.0
+        for i in self.parents:
+            if float(self.parents[i].fitness) < float(bestFitness):
                 parentWithBestFitness = self.parents[i]
-            else:
-                parentWithBestFitness = self.parents[i+1]
+                bestFitness = self.parents[i].fitness
         parentWithBestFitness.Start_Simulation("GUI")
+        print(parentWithBestFitness.fitness, bestFitness)
