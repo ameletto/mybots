@@ -25,7 +25,7 @@ class PARALLEL_HILL_CLIMBER:
 
     def Evolve_For_One_Generation(self):
         self.Spawn()
-        # self.Mutate()
+        self.Mutate()
         # self.child.Evaluate("DIRECT")
         # self.Print()
         # self.Select()
@@ -37,11 +37,10 @@ class PARALLEL_HILL_CLIMBER:
             self.children[i] = copy.deepcopy(self.parents[i])
             self.children[i].Set_ID()
             self.nextAvailableID += 1
-        print(self.children)
-        exit()
 
     def Mutate(self):
-        self.child.Mutate()
+        for j in self.children:
+            self.children[j].Mutate()
 
     def Select(self):
         # we want the robot to move as far away from the camera as possible (smallest x value)
