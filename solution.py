@@ -19,7 +19,7 @@ class SOLUTION:
         self.Create_Brain()
         # for multiple simulations to run at the same time
         # also starts simulate.py and immediately starts running the next statement without waiting for simulate.py to finish
-        os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) +" &")
+        os.system("python3 simulate.py " + directOrGUI + " " + str(self.myID) +" 2&>1 &")
 
     def Wait_For_Simulation_To_End(self):
         while not os.path.exists("fitness"+str(self.myID)+".txt"):

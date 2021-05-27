@@ -14,7 +14,7 @@ class PARALLEL_HILL_CLIMBER:
             self.nextAvailableID += 1
 
     def Evolve(self):
-        self.Evaluate(self.parents)
+        self.Evaluatep(self.parents)
         # this for loop will spawn a mutated copy of self.parent, evaluate that child solution's fitness, 
         # and replace self.parent with this child, if it achieves a better fitness <-- repeat for several generations
         for currentGeneration in range(c.numberOfGenerations):
@@ -39,6 +39,12 @@ class PARALLEL_HILL_CLIMBER:
     def Mutate(self):
         for j in self.parents:
             self.children[j].Mutate()
+
+    def Evaluatep(self, solutions):
+        for j in solutions:
+            solutions[j].Start_Simulation("GUI")
+        for k in solutions:
+            solutions[k].Wait_For_Simulation_To_End() 
 
     def Evaluate(self, solutions):
         for j in solutions:
@@ -65,4 +71,4 @@ class PARALLEL_HILL_CLIMBER:
                 parentWithBestFitness = self.parents[i]
                 bestFitness = self.parents[i].fitness
         parentWithBestFitness.Start_Simulation("GUI")
-        print(parentWithBestFitness.fitness, bestFitness)
+        print(parentWithBestFitness.fitness)
