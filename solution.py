@@ -38,13 +38,16 @@ class SOLUTION:
         # since FrontLeg has an upstream joint, it's position is relative to that joint
         pyrosim.Send_Cube(name="FrontLeg", pos=[0,0.5,0] , size=[0.2,1,0.2])
         pyrosim.Send_Cube(name="LeftLeg", pos=[-0.5,0,0] , size=[1,0.2,0.2])
+        pyrosim.Send_Cube(name="RightLeg", pos=[0.5,0,0] , size=[1,0.2,0.2])
         # each leg should rotate through the y/z plane
         pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" ,
         type = "revolute", position = "0 -0.5 1", jointAxis = "1 0 0")
         pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" ,
         type = "revolute", position = "0 0.5 1", jointAxis = "1 0 0")
         pyrosim.Send_Joint( name = "Torso_LeftLeg" , parent= "Torso" , child = "LeftLeg" ,
-        type = "revolute", position = "-0.5 0 1", jointAxis = "1 0 0")
+        type = "revolute", position = "-0.5 0 1", jointAxis = "0 1 0")
+        pyrosim.Send_Joint( name = "Torso_RightLeg" , parent= "Torso" , child = "RightLeg" ,
+        type = "revolute", position = "0.5 0 1", jointAxis = "0 1 0")
         pyrosim.End()
 
     def Create_Brain(self):
@@ -57,6 +60,8 @@ class SOLUTION:
 
         pyrosim.Send_Sensor_Neuron(name = 5 , linkName = "LeftLeg")
         pyrosim.Send_Motor_Neuron( name = 6 , jointName = "Torso_LeftLeg")
+        pyrosim.Send_Sensor_Neuron(name = 7 , linkName = "RightLeg")
+        pyrosim.Send_Motor_Neuron( name = 8 , jointName = "Torso_RightLeg")
         # synapses don't have IDs because they are the last type of components will be generating; nothing else will have to refer to them
         # 0 is the presynaptic neuron, 3 is the postsynaptic neuron
         for currentRow in range (0, c.numSensorNeurons):
