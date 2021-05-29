@@ -55,13 +55,13 @@ class PARALLEL_HILL_CLIMBER:
     def Select(self):
         # we want the robot to move as far away from the camera as possible (smallest x value)
         for i in self.parents:
-            if float((self.parents[i]).fitness) >= float((self.children[i]).fitness):
+            if float((self.parents[i]).fitness) <= float((self.children[i]).fitness):
                 self.parents[i] = self.children[i]
 
     def Show_Best(self):
-        bestFitness = 9001.0
+        bestFitness = -1000.0
         for i in self.parents:
-            if float(self.parents[i].fitness) < float(bestFitness):
+            if float(self.parents[i].fitness) > float(bestFitness):
                 parentWithBestFitness = self.parents[i]
                 bestFitness = self.parents[i].fitness
         parentWithBestFitness.Start_Simulation("GUI")
