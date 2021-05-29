@@ -3,6 +3,7 @@ import pyrosim.pyrosim as pyrosim
 import os
 import random
 import time
+import constants as c
 
 length=1
 width=1
@@ -10,7 +11,7 @@ height=1
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
-        self.weights = numpy.random.rand(3, 2) * 2 - 1
+        self.weights = numpy.random.rand(c.numSensorNeurons, c.numMotorNeurons) * 2 - 1
         self.myID = nextAvailableID
         
     def Start_Simulation(self, directOrGUI):
@@ -54,8 +55,8 @@ class SOLUTION:
         pyrosim.Send_Motor_Neuron( name = 4 , jointName = "Torso_FrontLeg")
         # synapses don't have IDs because they are the last type of components will be generating; nothing else will have to refer to them
         # 0 is the presynaptic neuron, 3 is the postsynaptic neuron
-        for currentRow in range (0, 3):
-            for currentColumn in range (0, 2):
+        for currentRow in range (0, c.numSensorNeurons):
+            for currentColumn in range (0, c.numMotorNeurons):
                 pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn+3 , weight = self.weights[currentRow][currentColumn] )
         pyrosim.End()
 
