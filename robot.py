@@ -6,6 +6,7 @@ from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import time
 import constants as c
+import numpy
 
 class ROBOT:
     def __init__(self, solutionID):
@@ -24,6 +25,7 @@ class ROBOT:
         self.sensors = {}
         for linkName in pyrosim.linkNamesToIndices:
             self.sensors[linkName] = SENSOR(linkName)
+        print(self.sensors)
 
     def Sense(self, t):
         for i in self.sensors:
@@ -46,7 +48,7 @@ class ROBOT:
 
     def Think(self):
         self.nn.Update()
-        # self.nn.Print()
+        self.nn.Print()
 
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link

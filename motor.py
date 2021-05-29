@@ -1,4 +1,3 @@
-# from numpy.lib.shape_base import take_along_axis
 import constants as c
 import numpy
 import pyrosim.pyrosim as pyrosim

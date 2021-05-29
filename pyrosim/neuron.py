@@ -54,13 +54,13 @@ class NEURON:
 
     def Print(self):
 
-        # self.Print_Name()
+        self.Print_Name()
 
-        # self.Print_Type()
+        self.Print_Type()
 
         self.Print_Value()
 
-        # print("")
+        print("")
 
     def Set_Value(self,value):
 
