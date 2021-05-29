@@ -25,12 +25,13 @@ def Generate_Brain():
     pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
     pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
     pyrosim.Send_Sensor_Neuron(name = 2 , linkName = "FrontLeg")
-    pyrosim.Send_Motor_Neuron( name = 3 , jointName = "Torso_BackLeg")
-    pyrosim.Send_Motor_Neuron( name = 4 , jointName = "Torso_FrontLeg")
+    pyrosim.Send_Sensor_Neuron(name = 3 , linkName = "FrontLeg")
+    pyrosim.Send_Motor_Neuron( name = 4 , jointName = "Torso_BackLeg")
+    pyrosim.Send_Motor_Neuron( name = 5 , jointName = "Torso_FrontLeg")
     # synapses don't have IDs because they are the last type of components will be generating; nothing else will have to refer to them
     # 0 is the presynaptic neuron, 3 is the postsynaptic neuron
-    for i in range (0, 3):
-        for j in range (3, 5):
+    for i in range (0, 4):
+        for j in range (4, 6):
             pyrosim.Send_Synapse( sourceNeuronName = i , targetNeuronName = j , weight = random.random()*2-1 )
     pyrosim.End()
 
