@@ -39,6 +39,10 @@ class SOLUTION:
         pyrosim.Send_Cube(name="FrontLeg", pos=[0,0.5,0] , size=[0.2,1,0.2])
         pyrosim.Send_Cube(name="LeftLeg", pos=[-0.5,0,0] , size=[1,0.2,0.2])
         pyrosim.Send_Cube(name="RightLeg", pos=[0.5,0,0] , size=[1,0.2,0.2])
+        pyrosim.Send_Cube(name="FrontLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1])
+        pyrosim.Send_Cube(name="BackLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1])
+        pyrosim.Send_Cube(name="LeftLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1])
+        pyrosim.Send_Cube(name="RightLowerLeg", pos=[0,0,-0.5] , size=[0.2,0.2,1])
         # each leg should rotate through the y/z plane
         pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" ,
         type = "revolute", position = "0 -0.5 1", jointAxis = "1 0 0")
@@ -48,6 +52,14 @@ class SOLUTION:
         type = "revolute", position = "-0.5 0 1", jointAxis = "0 1 0")
         pyrosim.Send_Joint( name = "Torso_RightLeg" , parent= "Torso" , child = "RightLeg" ,
         type = "revolute", position = "0.5 0 1", jointAxis = "0 1 0")
+        pyrosim.Send_Joint( name = "FrontLeg_FrontLowerLeg" , parent= "FrontLeg" , child = "FrontLowerLeg" ,
+        type = "revolute", position = "0 1 0", jointAxis = "1 0 0")
+        pyrosim.Send_Joint( name = "BackLeg_BackLowerLeg" , parent= "BackLeg" , child = "BackLowerLeg" ,
+        type = "revolute", position = "0 -1 0", jointAxis = "1 0 0")
+        pyrosim.Send_Joint( name = "LeftLeg_LeftLowerLeg" , parent= "LeftLeg" , child = "LeftLowerLeg" ,
+        type = "revolute", position = "-1 0 0", jointAxis = "0 1 0")
+        pyrosim.Send_Joint( name = "RightLeg_RightLowerLeg" , parent= "RightLeg" , child = "RightLowerLeg" ,
+        type = "revolute", position = "1 0 0", jointAxis = "0 1 0")
         pyrosim.End()
 
     def Create_Brain(self):
@@ -62,6 +74,14 @@ class SOLUTION:
         pyrosim.Send_Motor_Neuron( name = 6 , jointName = "Torso_LeftLeg")
         pyrosim.Send_Sensor_Neuron(name = 7 , linkName = "RightLeg")
         pyrosim.Send_Motor_Neuron( name = 8 , jointName = "Torso_RightLeg")
+        pyrosim.Send_Sensor_Neuron(name = 9 , linkName = "FrontLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 10 , jointName = "FrontLeg_FrontLowerLeg")
+        pyrosim.Send_Sensor_Neuron(name = 11 , linkName = "BackLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 12 , jointName = "BackLeg_BackLowerLeg")
+        pyrosim.Send_Sensor_Neuron(name = 13 , linkName = "LeftLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 14 , jointName = "LeftLeg_LeftLowerLeg")
+        pyrosim.Send_Sensor_Neuron(name = 15 , linkName = "RightLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 16 , jointName = "RightLeg_RightLowerLeg")
         # synapses don't have IDs because they are the last type of components will be generating; nothing else will have to refer to them
         # 0 is the presynaptic neuron, 3 is the postsynaptic neuron
         for currentRow in range (0, c.numSensorNeurons):
