@@ -29,7 +29,6 @@ class ROBOT:
     def Sense(self, t):
         for i in self.sensors:
             self.sensors[i].Get_Value(t)
-        print(self.sensors)
 
     def Prepare_To_Act(self, robot):
         self.motors = {}
@@ -52,6 +51,14 @@ class ROBOT:
 
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
+        sensorValues = {}
+        for i in self.sensors:
+            sensorValues.update({i: self.values})
+        sensorValuesTotal = 0
+        for j in sensorValues:
+            sensorValuesTotal += numpy.mean(sensorValues[j])
+        sensorValuesMean = sensorValuesTotal/4
+        return sensorValuesMean
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robot)
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[2]
