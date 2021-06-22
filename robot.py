@@ -47,22 +47,33 @@ class ROBOT:
 
     def Think(self):
         self.nn.Update()
-        self.nn.Print()
+        # self.nn.Print()
 
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
-        sensorValues = {}
-        for i in self.sensors:
-            sensorValues.update({i: self.values})
-        sensorValuesTotal = 0
-        for j in sensorValues:
-            sensorValuesTotal += numpy.mean(sensorValues[j])
-        sensorValuesMean = sensorValuesTotal/4
-        return sensorValuesMean
-        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robot)
-        basePosition = basePositionAndOrientation[0]
-        xPosition = basePosition[2]
+
+        # but we need all the legs to be off the ground so fix that
+        timeStampConsNegOnes = 0
+        oneLiftOff = 0
+        longestLiftOff = 0
+        for j in range (1000):
+            for i in self.sensors:
+                if self.sensors[i].values[j] == -1:
+                    timeStampConsNegOnes += 1
+                else:
+                    timeStampConsNegOnes = 0
+                    oneLiftOff = 0
+                    break 
+                timeStampConsNegOnes = 0
+            if timeStampConsNegOnes == len(self.sensors):
+                oneLiftOff += 1
+                if oneLiftOff > longestLiftOff:
+                    longestLiftOff = oneLiftOff
         f = open("tmp"+str(self.solutionID)+".txt", "w")
-        f.write(str(xPosition))
+        f.write(str(longestLiftOff))
         f.close()
         os.system("mv" + " " + "tmp"+str(self.solutionID)+".txt" + " " + "fitness"+str(self.solutionID)+".txt") 
+        # basePositionAndOrientation = p.getBasePositionAndOrientation(self.robot)
+        # basePosition = basePositionAndOrientation[0]
+        # xPosition = basePosition[2]
+        
