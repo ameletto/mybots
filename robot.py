@@ -51,24 +51,16 @@ class ROBOT:
 
     def Get_Fitness(self):
         # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
-
-        # but we need all the legs to be off the ground so fix that
-        timeStampConsNegOnes = 0
         oneLiftOff = 0
         longestLiftOff = 0
+        # print(self.sensors['FrontLowerLeg'].values, self.sensors['BackLowerLeg'].values, self.sensors['LeftLowerLeg'].values, self.sensors['RightLowerLeg'].values)
         for j in range (1000):
-            for i in self.sensors:
-                if self.sensors[i].values[j] == -1:
-                    timeStampConsNegOnes += 1
-                else:
-                    timeStampConsNegOnes = 0
-                    oneLiftOff = 0
-                    break 
-                timeStampConsNegOnes = 0
-            if timeStampConsNegOnes == len(self.sensors):
+            if self.sensors['FrontLowerLeg'].values[j] == -1 and self.sensors['BackLowerLeg'].values[j] == -1 and self.sensors['LeftLowerLeg'].values[j] == -1 and self.sensors['RightLowerLeg'].values[j] == -1:
                 oneLiftOff += 1
-                if oneLiftOff > longestLiftOff:
-                    longestLiftOff = oneLiftOff
+            else:
+                oneLiftOff = 0
+            if oneLiftOff > longestLiftOff:
+                longestLiftOff = oneLiftOff
         f = open("tmp"+str(self.solutionID)+".txt", "w")
         f.write(str(longestLiftOff))
         f.close()
