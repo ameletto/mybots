@@ -8,10 +8,11 @@ amplitudeFrontLeg=numpy.pi/4
 frequencyFrontLeg=10
 phaseOffsetFrontLeg=0
 
-numberOfGenerations = 10
+numberOfGenerations = 5
 populationSize = 10
 
 numSensorNeurons = 4
+numHiddenNeurons = 4
 numMotorNeurons = 8
 
 motorJointRange = 0.2

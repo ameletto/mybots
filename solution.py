@@ -7,7 +7,9 @@ import constants as c
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
-        self.weights = numpy.random.rand(c.numSensorNeurons, c.numMotorNeurons) * 2 - 1
+        self.sensorToHiddenWeights = numpy.random.rand(c.numSensorNeurons, c.numHiddenNeurons) * 2 - 1
+        self.hiddenToMotorWeights = numpy.random.rand(c.numHiddenNeurons, c.numMotorNeurons) * 2 - 1
+        self.hiddenToHiddenWeights = numpy.random.rand(c.numHiddenNeurons, c.numHiddenNeurons) * 2 - 1
         self.myID = nextAvailableID
         
     def Start_Simulation(self, directOrGUI):
@@ -69,25 +71,57 @@ class SOLUTION:
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = "LeftLowerLeg")
         pyrosim.Send_Sensor_Neuron(name = 3 , linkName = "RightLowerLeg")
 
-        pyrosim.Send_Motor_Neuron( name = 4 , jointName = "Torso_FrontLeg")
-        pyrosim.Send_Motor_Neuron( name = 5 , jointName = "Torso_BackLeg")
-        pyrosim.Send_Motor_Neuron( name = 6 , jointName = "Torso_LeftLeg")
-        pyrosim.Send_Motor_Neuron( name = 7 , jointName = "Torso_RightLeg")
-        pyrosim.Send_Motor_Neuron( name = 8 , jointName = "FrontLeg_FrontLowerLeg")
-        pyrosim.Send_Motor_Neuron( name = 9 , jointName = "BackLeg_BackLowerLeg")
-        pyrosim.Send_Motor_Neuron( name = 10 , jointName = "LeftLeg_LeftLowerLeg")
-        pyrosim.Send_Motor_Neuron( name = 11 , jointName = "RightLeg_RightLowerLeg")
+        pyrosim.Send_Hidden_Neuron(name = 4)
+        pyrosim.Send_Hidden_Neuron(name = 5)
+        pyrosim.Send_Hidden_Neuron(name = 6)
+        pyrosim.Send_Hidden_Neuron(name = 7)
+        # hidden neurons are not associated with any part of the body so there is no link/joint Name param
+
+        pyrosim.Send_Motor_Neuron( name = 8 , jointName = "Torso_FrontLeg")
+        pyrosim.Send_Motor_Neuron( name = 9 , jointName = "Torso_BackLeg")
+        pyrosim.Send_Motor_Neuron( name = 10 , jointName = "Torso_LeftLeg")
+        pyrosim.Send_Motor_Neuron( name = 11 , jointName = "Torso_RightLeg")
+        pyrosim.Send_Motor_Neuron( name = 12 , jointName = "FrontLeg_FrontLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 13 , jointName = "BackLeg_BackLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 14 , jointName = "LeftLeg_LeftLowerLeg")
+        pyrosim.Send_Motor_Neuron( name = 15 , jointName = "RightLeg_RightLowerLeg")
         # synapses don't have IDs because they are the last type of components will be generating; nothing else will have to refer to them
         # 0 is the presynaptic neuron, 3 is the postsynaptic neuron
         for currentRow in range (0, c.numSensorNeurons):
+            for currentColumn in range (0, c.numHiddenNeurons):
+                pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn+4 , weight = self.sensorToHiddenWeights[currentRow][currentColumn] )
+        for currentRow in range (0, c.numHiddenNeurons):
             for currentColumn in range (0, c.numMotorNeurons):
-                pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn+3 , weight = self.weights[currentRow][currentColumn] )
+                pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn+4 , weight = self.hiddenToMotorWeights[currentRow][currentColumn] )
+        for currentRow in range (0, c.numHiddenNeurons):
+            for currentColumn in range (0, c.numHiddenNeurons):
+                pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn+4 , weight = self.hiddenToHiddenWeights[currentRow][currentColumn] )
         pyrosim.End()
+        
+        # writing out every neuron
+        f = open("brain"+str(self.myID)+".nndf","r")
+        for position, line in enumerate(f):
+            if position in range (1, c.numMotorNeurons+c.numHiddenNeurons+c.numSensorNeurons+1):
+                print(line)
+        f.close
+
+        # for i in range (c.numSensorNeurons):
+        #     print("brain"+str(self.myID)+".nndf"[i])
+        # for j in range (c.numHiddenNeurons):
+        #     print("brain"+str(self.myID)+".nndf"[j])
+        # for k in range (c.numMotorNeurons):
+        #     print("brain"+str(self.myID)+".nndf"[k])
 
     def Mutate(self):
-        randomRow = random.randint(0, 2)
-        randomColumn = random.randint(0, 1)
-        self.weights[randomRow,randomColumn] = random.random() * 2 - 1
+        randomRowStH = random.randint(0, c.numSensorNeurons-1)
+        randomColumnStH = random.randint(0, c.numHiddenNeurons-1)
+        self.sensorToHiddenWeights[randomRowStH,randomColumnStH] = random.random() * 2 - 1
+        randomRowHtM = random.randint(0, c.numHiddenNeurons-1)
+        randomColumnHtM = random.randint(0, c.numMotorNeurons-1)
+        self.hiddenToMotorWeights[randomRowHtM,randomColumnHtM] = random.random() * 2 - 1
+        randomRowHtH = random.randint(0, c.numHiddenNeurons-1)
+        randomColumnHtH = random.randint(0, c.numHiddenNeurons-1)
+        self.hiddenToHiddenWeights[randomRowHtH,randomColumnHtH] = random.random() * 2 - 1
 
     def Set_ID(self, newID):
         self.myID = newID

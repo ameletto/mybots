@@ -50,7 +50,7 @@ class ROBOT:
         # self.nn.Print()
 
     def Get_Fitness(self):
-        # self.robot is the robot, 0 is the link, p.getLinkState gets the position of the link
+        # # longest time afloat
         # oneLiftOff = 0
         # longestLiftOff = 0
         # # print(self.sensors['FrontLowerLeg'].values, self.sensors['BackLowerLeg'].values, self.sensors['LeftLowerLeg'].values, self.sensors['RightLowerLeg'].values)
@@ -62,31 +62,22 @@ class ROBOT:
         #     if oneLiftOff > longestLiftOff:
         #         longestLiftOff = oneLiftOff
         
-        zTorso = p.getLinkState(self.robot,0)[0][2]
-        zFrontLowerLeg = p.getLinkState(self.robot,1)[0][2]
-        zBackLowerLeg = p.getLinkState(self.robot,2)[0][2]
-        zLeftLowerLeg = p.getLinkState(self.robot,3)[0][2]
-        zRightLowerLeg = p.getLinkState(self.robot,4)[0][2]
-        
-        # worldPosTorso = stateOfTorso[0]
-        # worldPosFrontLowerLeg = stateOfFrontLowerLeg[0]
-        # worldPosBackLowerLeg = stateOfBackLowerLeg[0]
-        # worldPosLeftLowerLeg = stateOfLeftLowerLeg[0]
-        # worldPosRightLowerLeg = stateOfRightLowerLeg[0]
+        # # weird torso on ground legs in the air
+        # zTorso = p.getLinkState(self.robot,0)[0][2]
+        # zFrontLowerLeg = p.getLinkState(self.robot,1)[0][2]
+        # zBackLowerLeg = p.getLinkState(self.robot,2)[0][2]
+        # zLeftLowerLeg = p.getLinkState(self.robot,3)[0][2]
+        # zRightLowerLeg = p.getLinkState(self.robot,4)[0][2]
+        # if zTorso == 0.5:
+        #     robotFitness = (zFrontLowerLeg+zBackLowerLeg+zLeftLowerLeg+zRightLowerLeg)/4
+        # else:
+        #     robotFitness = 0
 
-        # zTorso = worldPosTorso[2]
-        # zFrontLowerLeg = worldPosFrontLowerLeg[2]
-        # zBackLowerLeg = worldPosBackLowerLeg[2]
-        # zLeftLowerLeg = worldPosLeftLowerLeg[2]
-        # zRightLowerLeg = worldPosRightLowerLeg[2]
-
-        if zTorso == 0.5:
-            robotFitness = (zFrontLowerLeg+zBackLowerLeg+zLeftLowerLeg+zRightLowerLeg)/4
-        else:
-            robotFitness = 0
+        # highest it can go
+        zRobot = p.getBasePositionAndOrientation(self.robot)[0][2]
 
         f = open("tmp"+str(self.solutionID)+".txt", "w")
-        f.write(str(robotFitness))
+        f.write(str(zRobot))
         f.close()
         os.system("mv" + " " + "tmp"+str(self.solutionID)+".txt" + " " + "fitness"+str(self.solutionID)+".txt") 
         
